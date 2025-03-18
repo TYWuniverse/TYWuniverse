@@ -1,5 +1,6 @@
-# Project Solara - Sentinel AI (v0.1)
-# Core Process Monitor + Network Scanner (MVP)
+# ======================
+# solara_core/__S0L4CORE__.py
+# ======================
 
 import psutil
 import socket
@@ -17,7 +18,6 @@ class SolaraSentinel:
         self.threats_detected = []
 
     def load_whitelist(self):
-        # Known safe processes (extend as needed)
         return ["System", "explorer.exe", "python.exe", "solara.exe"]
 
     def get_running_processes(self):
@@ -41,7 +41,6 @@ class SolaraSentinel:
                     logging.warning(f"Failed to terminate {name}: {e}")
 
     def scan_network_connections(self):
-        # Look for unusual outgoing connections
         connections = psutil.net_connections()
         for conn in connections:
             if conn.status == "ESTABLISHED" and conn.raddr:
@@ -51,7 +50,6 @@ class SolaraSentinel:
                     self.threats_detected.append(f"Unknown connection: {ip}")
 
     def is_known_ip(self, ip):
-        # Placeholder safe IPs
         safe_ips = ["127.0.0.1"]
         return ip in safe_ips
 
@@ -69,16 +67,48 @@ class SolaraSentinel:
             self.threats_detected.clear()
             time.sleep(self.scan_interval)
 
-if __name__ == "__main__":
-    sentinel = SolaraSentinel()
-    sentinel.run()
+# ======================
+# solara_core/__init__.py
+# ======================
+# from .__S0L4CORE__ import SolaraSentinel
 
 # ======================
-# GitHub Workflow
+# setup.py
 # ======================
-# 1. git init
-# 2. git add .
-# 3. git commit -m "Initialize Project Solara v0.1 - Core Sentinel module"
-# 4. git branch -M main
-# 5. git remote add origin https://github.com/YourUsername/Project-Solara.git
-# 6. git push -u origin main
+# from setuptools import setup, find_packages
+
+# setup(
+#     name='solara-sentinel',
+#     version='0.1.0',
+#     packages=find_packages(),
+#     install_requires=[
+#         'psutil',
+#     ],
+#     entry_points={
+#         'console_scripts': [
+#             'solara-sentinel=solara_core.__S0L4CORE__:SolaraSentinel.run',
+#         ],
+#     },
+#     author='Your Name',
+#     description='Solara Sentinel - AI-driven cybersecurity tool',
+#     license='MIT',
+#     classifiers=[
+#         'Programming Language :: Python :: 3',
+#         'License :: OSI Approved :: MIT License',
+#     ],
+# )
+
+# ======================
+# requirements.txt
+# ======================
+# psutil>=5.9.0
+
+# ======================
+# PyPI Publishing Guide
+# ======================
+# 1. Install tools: python -m pip install --upgrade build twine
+# 2. Create requirements.txt with dependencies
+# 3. Build the package: python -m build
+# 4. Upload to TestPyPI: twine upload --repository testpypi dist/*
+# 5. Upload to PyPI: twine upload dist/*
+# 6. Install: pip install solara-sentinel
