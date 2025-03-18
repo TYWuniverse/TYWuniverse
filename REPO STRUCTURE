@@ -1,0 +1,20 @@
+Project-Solara/
+├── README.md
+├── LICENSE (MIT or GPLv3)
+├── solara_core/
+│   ├── sentinel.py
+│   ├── ai_detector.py
+│   ├── integrity_restorer.py
+│   └── network_monitor.py
+├── gui/
+│   ├── dashboard.py
+│   └── assets/
+├── data/
+│   ├── training_data/ (for AI model)
+│   └── whitelist.json
+├── tests/
+│   └── test_sentinel.py
+├── requirements.txt
+├── setup.py
+└── docs/
+    └── architecture.md
