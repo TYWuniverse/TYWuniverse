@@ -1,1 +1,14 @@
-Solara Sentinel is an open-source, AI-powered cybersecurity guardian focused on defending users against surveillance, malware, and systemic control. Run it, let it learn, and let the light in
+# 🌞 Project Solara - Sentinel AI
+
+**Illuminate. Liberate. Defend.**  
+Solara is an AI-powered cybersecurity tool that monitors your system for unauthorized processes and network activity, disrupts threats, and restores digital freedom.
+
+## Features
+- Real-time process monitoring
+- Network threat detection
+- Automatic neutralization
+- Activity logging
+
+## Usage
+```bash
+python sentinel.py
