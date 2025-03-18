@@ -1,0 +1,84 @@
+# Project Solara - Sentinel AI (v0.1)
+# Core Process Monitor + Network Scanner (MVP)
+
+import psutil
+import socket
+import time
+import logging
+from datetime import datetime
+
+# Initialize logging
+logging.basicConfig(filename="solara_log.txt", level=logging.INFO)
+
+class SolaraSentinel:
+    def __init__(self):
+        self.whitelist = self.load_whitelist()
+        self.scan_interval = 60  # seconds
+        self.threats_detected = []
+
+    def load_whitelist(self):
+        # Known safe processes (extend as needed)
+        return ["System", "explorer.exe", "python.exe", "solara.exe"]
+
+    def get_running_processes(self):
+        return [proc.name() for proc in psutil.process_iter()]
+
+    def detect_suspicious_processes(self):
+        processes = self.get_running_processes()
+        for proc in processes:
+            if proc not in self.whitelist:
+                logging.info(f"[{datetime.now()}] Suspicious process: {proc}")
+                self.threats_detected.append(proc)
+                self.terminate_process(proc)
+
+    def terminate_process(self, name):
+        for proc in psutil.process_iter():
+            if proc.name() == name:
+                try:
+                    proc.terminate()
+                    logging.info(f"[{datetime.now()}] Terminated: {name}")
+                except Exception as e:
+                    logging.warning(f"Failed to terminate {name}: {e}")
+
+    def scan_network_connections(self):
+        # Look for unusual outgoing connections
+        connections = psutil.net_connections()
+        for conn in connections:
+            if conn.status == "ESTABLISHED" and conn.raddr:
+                ip = conn.raddr.ip
+                if not self.is_known_ip(ip):
+                    logging.info(f"[{datetime.now()}] Unknown connection: {ip}")
+                    self.threats_detected.append(f"Unknown connection: {ip}")
+
+    def is_known_ip(self, ip):
+        # Placeholder safe IPs
+        safe_ips = ["127.0.0.1"]
+        return ip in safe_ips
+
+    def notify_user(self):
+        if self.threats_detected:
+            print(f"[Solara] {len(self.threats_detected)} threats neutralized.")
+            logging.info(f"[{datetime.now()}] User notified.")
+
+    def run(self):
+        print("[Solara Sentinel] Activating Light...")
+        while True:
+            self.detect_suspicious_processes()
+            self.scan_network_connections()
+            self.notify_user()
+            self.threats_detected.clear()
+            time.sleep(self.scan_interval)
+
+if __name__ == "__main__":
+    sentinel = SolaraSentinel()
+    sentinel.run()
+
+# ======================
+# GitHub Workflow
+# ======================
+# 1. git init
+# 2. git add .
+# 3. git commit -m "Initialize Project Solara v0.1 - Core Sentinel module"
+# 4. git branch -M main
+# 5. git remote add origin https://github.com/YourUsername/Project-Solara.git
+# 6. git push -u origin main
